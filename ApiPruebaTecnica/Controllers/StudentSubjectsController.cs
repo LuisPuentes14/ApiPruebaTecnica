@@ -22,6 +22,10 @@ namespace ApiPruebaTecnica.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Obtiene todas las materias que tienen los studiantes
+        /// </summary>
+        /// <returns></returns>
         // GET: api/StudentSubjects
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetStudentSubjects()
@@ -43,6 +47,11 @@ namespace ApiPruebaTecnica.Controllers
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Obtiene los estudiantes que estan viendo una materia
+        /// </summary>
+        /// <param name="subjectId"></param>
+        /// <returns></returns>
         [HttpGet("GetStudentSubjectsBySubjectId/{subjectId}")]
         public async Task<ActionResult<IEnumerable<object>>> GetStudentSubjectsBySubjectId(int subjectId)
         {
@@ -55,13 +64,17 @@ namespace ApiPruebaTecnica.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(result);
+            return result;
         }
 
-
+        /// <summary>
+        /// Obtiene las materias asignadas a un estudiante
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: api/StudentSubjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetStudentSubject(int id)
+        public async Task<ActionResult<IEnumerable<object>>> GetStudentSubject(int id)
         {
             var studentSubject = await _context.StudentSubjects.Include(x => x.Subject)
                 .Include(x => x.IdStudentNavigation)
@@ -76,12 +89,7 @@ namespace ApiPruebaTecnica.Controllers
                     StudentNumberDocument = x.IdStudentNavigation != null ? x.IdStudentNavigation.NumberDocument : null,
                     SubjectName = x.Subject != null ? x.Subject.Name : null,
                     TeacherName = x.Subject.TeacherSubjects != null ? x.Subject.TeacherSubjects.FirstOrDefault().Teacher.Name : null
-                }).FirstOrDefaultAsync();
-
-            if (studentSubject == null)
-            {
-                return NotFound();
-            }
+                }).ToListAsync();           
 
             return studentSubject;
         }
