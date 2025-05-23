@@ -123,6 +123,8 @@ namespace ApiPruebaTecnica.Controllers
                 return NotFound();
             }
 
+            _context.StudentSubjects.RemoveRange(_context.StudentSubjects.Where(x => x.IdStudent == id));
+
             _context.Students.Remove(student);
             await _context.SaveChangesAsync();
 
