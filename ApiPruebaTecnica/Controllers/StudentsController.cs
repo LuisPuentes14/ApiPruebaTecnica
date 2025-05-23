@@ -11,18 +11,33 @@ using ApiPruebaTecnica.Dtos;
 
 namespace ApiPruebaTecnica.Controllers
 {
+    /// <summary>
+    /// Controlador para gestionar las operaciones CRUD de los estudiantes.
+    /// </summary>
+    /// <remarks>
+    /// Nota: Esta implementación puede ser refactorizada utilizando el patrón de arquitectura limpia (Clean Architecture),
+    /// separando responsabilidades en capas como Aplicación, Dominio e Infraestructura, para mejorar la escalabilidad,
+    /// mantenibilidad y facilitar pruebas unitarias.
+    /// </remarks>
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
         private readonly BaseDeDatosPruebaTecnicaContext _context;
 
+        /// <summary>
+        /// Constructor del controlador de estudiantes.
+        /// </summary>
+        /// <param name="context">Contexto de base de datos inyectado.</param>
         public StudentsController(BaseDeDatosPruebaTecnicaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Students
+        /// <summary>
+        /// Obtiene todos los estudiantes con su respectivo programa de crédito.
+        /// </summary>
+        /// <returns>Una lista de estudiantes con información del programa de crédito.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetStudents()
         {
@@ -43,7 +58,11 @@ namespace ApiPruebaTecnica.Controllers
             return students;
         }
 
-        // GET: api/Students/5
+        /// <summary>
+        /// Obtiene los detalles de un estudiante específico por su ID.
+        /// </summary>
+        /// <param name="id">ID del estudiante.</param>
+        /// <returns>Información del estudiante si existe; de lo contrario, 404.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetStudent(int id)
         {
@@ -70,8 +89,12 @@ namespace ApiPruebaTecnica.Controllers
             return student;
         }
 
-        // PUT: api/Students/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Actualiza un estudiante existente.
+        /// </summary>
+        /// <param name="id">ID del estudiante a actualizar.</param>
+        /// <param name="student">DTO con los datos actualizados del estudiante.</param>
+        /// <returns>Respuesta HTTP que indica el resultado de la operación.</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStudent(int id, DtoStudent student)
         {
@@ -101,8 +124,11 @@ namespace ApiPruebaTecnica.Controllers
             return NoContent();
         }
 
-        // POST: api/Students
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Crea un nuevo estudiante.
+        /// </summary>
+        /// <param name="student">DTO con los datos del nuevo estudiante.</param>
+        /// <returns>Estudiante creado con su ubicación.</returns>
         [HttpPost]
         public async Task<ActionResult<Student>> PostStudent(DtoStudent student)
         {
@@ -113,7 +139,11 @@ namespace ApiPruebaTecnica.Controllers
             return CreatedAtAction("GetStudent", new { id = student.IdStudent }, student);
         }
 
-        // DELETE: api/Students/5
+        /// <summary>
+        /// Elimina un estudiante por su ID.
+        /// </summary>
+        /// <param name="id">ID del estudiante a eliminar.</param>
+        /// <returns>Respuesta HTTP indicando el resultado de la eliminación.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(int id)
         {

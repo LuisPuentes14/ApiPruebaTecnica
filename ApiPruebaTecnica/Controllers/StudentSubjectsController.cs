@@ -11,22 +11,32 @@ using ApiPruebaTecnica.Dtos;
 
 namespace ApiPruebaTecnica.Controllers
 {
+    /// <summary>
+    /// Controlador para gestionar la asignación de materias a estudiantes.
+    /// </summary>
+    /// <remarks>
+    /// Nota: Esta clase puede beneficiarse de una refactorización siguiendo los principios de arquitectura limpia
+    /// para separar la lógica de validación y negocio del controlador, favoreciendo la mantenibilidad y pruebas unitarias.
+    /// </remarks>
     [Route("api/[controller]")]
     [ApiController]
     public class StudentSubjectsController : ControllerBase
     {
         private readonly BaseDeDatosPruebaTecnicaContext _context;
 
+        /// <summary>
+        /// Constructor del controlador.
+        /// </summary>
+        /// <param name="context">Contexto de base de datos inyectado.</param>
         public StudentSubjectsController(BaseDeDatosPruebaTecnicaContext context)
         {
             _context = context;
         }
 
         /// <summary>
-        /// Obtiene todas las materias que tienen los studiantes
+        /// Obtiene todas las materias asignadas a los estudiantes, incluyendo información del estudiante y del profesor.
         /// </summary>
-        /// <returns></returns>
-        // GET: api/StudentSubjects
+        /// <returns>Lista de asignaciones con datos relacionados.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetStudentSubjects()
         {
@@ -48,10 +58,10 @@ namespace ApiPruebaTecnica.Controllers
         }
 
         /// <summary>
-        /// Obtiene los estudiantes que estan viendo una materia
+        /// Obtiene los nombres de los estudiantes que están viendo una materia específica.
         /// </summary>
-        /// <param name="subjectId"></param>
-        /// <returns></returns>
+        /// <param name="subjectId">ID de la materia.</param>
+        /// <returns>Lista de nombres de estudiantes.</returns>
         [HttpGet("GetStudentSubjectsBySubjectId/{subjectId}")]
         public async Task<ActionResult<IEnumerable<object>>> GetStudentSubjectsBySubjectId(int subjectId)
         {
@@ -68,11 +78,10 @@ namespace ApiPruebaTecnica.Controllers
         }
 
         /// <summary>
-        /// Obtiene las materias asignadas a un estudiante
+        /// Obtiene las materias asignadas a un estudiante por su ID.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        // GET: api/StudentSubjects/5
+        /// <param name="id">ID del estudiante.</param>
+        /// <returns>Lista de materias con información del profesor y del estudiante.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<object>>> GetStudentSubject(int id)
         {
@@ -94,8 +103,11 @@ namespace ApiPruebaTecnica.Controllers
             return studentSubject;
         }
 
-        // POST: api/StudentSubjects
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Asigna una nueva materia a un estudiante, validando condiciones específicas.
+        /// </summary>
+        /// <param name="dto">Datos de la asignación.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpPost]
         public async Task<ActionResult<StudentSubject>> PostStudentSubject(DtoStudentSubject dto)
         {
@@ -153,7 +165,11 @@ namespace ApiPruebaTecnica.Controllers
         }
 
 
-        // DELETE: api/StudentSubjects/5
+        /// <summary>
+        /// Elimina una asignación de materia a estudiante por ID.
+        /// </summary>
+        /// <param name="id">ID de la asignación.</param>
+        /// <returns>Resultado de la operación.</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudentSubject(int id)
         {
